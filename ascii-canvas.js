@@ -12,27 +12,35 @@ var asciimap = {
 	height: Math.floor(canvasheight/fsize*1.2) - 1,
 	map: [[]],
 
-  put: function(char, x, y) {
-      this.map[[x, y]] = char;
+  put: function(char, x, y, color) {
+    var c = "#FFFFFF";
+    if(color)c=color;
+    this.map[[x, y]] = {char: char, color:c};
   },
 
-  putRect: function(char, x, y, w, h) {
+  putRect: function(char, x, y, w, h, color) {
+    var c = "#FFFFFF";
+    if(color)c=color;
     for(var _x = 0; _x < w; _x++) {
       for(var _y = 0; _y < h; _y++) {
-        this.map[[x + _x, y + _y]] = char;
+        this.map[[x + _x, y + _y]] = {char: char, color:c};
       }
     }
   },
 
-  putHString: function(string, x, y) {
+  putHString: function(string, x, y, color) {
+    var c = "#FFFFFF";
+    if(color)c=color;
     for(var _x = 0; _x <= string.length; _x++) {
-      this.map[[x + _x, y]] = string.charAt(_x);
+      this.map[[x + _x, y]] = {char: string.charAt(_x), color:c};
     }
   },
 
-  putVString: function(string, x, y) {
+  putVString: function(string, x, y, color) {
+    var c = "#FFFFFF";
+    if(color)c=color;
     for(var _y = 0; _y <= string.length; _y++) {
-      this.map[[x, y + _y]] = string.charAt(_y);
+      this.map[[x, y + _y]] = {char: string.charAt(_y), color:c};
     }
   },
 
@@ -43,7 +51,7 @@ var asciimap = {
 	init: function() {
 		for (var x = 0; x <= this.width; x++) {
 			for (var y = 0; y <= this.height; y++) {
-				this.map[[x, y]] = null;
+				this.map[[x, y]] = {char: null, color: "#000000"};
 			}
 		}
 	},
@@ -51,7 +59,7 @@ var asciimap = {
   clear: function() {
     for (var x = 0; x <= this.width; x++) {
 			for (var y = 0; y <= this.height; y++) {
-				this.map[[x, y]] = null;
+				this.map[[x, y]] = {char: null, color: "#000000"};
 			}
 		}
   }
@@ -78,20 +86,22 @@ function render() {
 	cc.fillStyle = 'black';
 	cc.fillRect(0, 0, c.width, c.height);
 
-  // Draw some letters
-  asciimap.put('A', 4 + testx, 4);
-  asciimap.put('B', 5 + testx, 5);
-  asciimap.put('C', 6 + testx, 4);
 
-  // Move letters
-  testx += 1;
+  // Draw a box of squares
+  asciimap.putRect(String.fromCharCode(parseInt(2588,16)), 10, 4, 5, 5);
+
+  // Draw some letters
+  asciimap.put('A', 4 + testx, 4, "#FF0000");
+  asciimap.put('B', 5 + testx, 5, "#00FF00");
+  asciimap.put('C', 6 + testx, 4, "#0000FF");
+
+  // Move letters in cycle
+  testx++;
+  testx = testx%30;
 
   // Draw horizontal strings
   asciimap.putHString("This is the ASCII canvas!", 0, 0);
   asciimap.putHString("Box:", 10, 2);
-
-  // Draw a box of squares
-  asciimap.putRect(String.fromCharCode(parseInt(2588,16)), 10, 4, 5, 5);
 
   asciimap.putVString("Vertical string!", 1, 2);
 
@@ -117,12 +127,12 @@ function drawObject(object, x, y) {
 }
 
 function renderMap(map) {
-  cc.font = "15px Courier New";
-  cc.fillStyle = 'white';
+  cc.font = "15px bold Courier New";
   for(var y = 0; y <= map.height; y++) {
     for(var x = 0; x <= map.width; x++) {
-      if(map.map[[x, y]] != null) {
-        cc.fillText(map.map[[x, y]], x*fsize*0.9 + 5 + 3, y*fsize*1.2 + 10 + 3);
+      if(map.map[[x, y]].char != null) {
+        cc.fillStyle = map.map[[x, y]].color;
+        cc.fillText(map.map[[x, y]].char, x*fsize*0.9 + 5 + 3, y*fsize*1.2 + 10 + 3);
       }
     }
   }
