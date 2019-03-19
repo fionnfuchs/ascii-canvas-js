@@ -1,7 +1,7 @@
 
-#gc {
-	margin: auto;
-	padding: 0;
+#ascii-canvas {
+	margin-right: auto;
+	margin-left: auto;
 	display: block;
 }
 
