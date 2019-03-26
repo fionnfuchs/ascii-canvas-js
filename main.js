@@ -16,7 +16,7 @@ window.onload = function() {
 };
 
 function init() {
-    renderer.init();
+    renderer.init(); //Creating the ASCII Canvas: Default size: 69*32 symbols - it is not advised to change size at this stage
     readTextFile("./ascii/owl.txt", function(string) {
         owl = string;
     })
