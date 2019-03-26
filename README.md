@@ -4,6 +4,9 @@
 
 This is a javascript framework for drawing monospace ascii on a canvas. In the future functionality for game development is planned.
 
+### Take a look
+You can see a small demo of functionality at **https://fionnfuchs.github.io/ascii-canvas-js/**
+
 ### Features
 - Draw single characters on grid
 - Draw boxes of characters on grid
